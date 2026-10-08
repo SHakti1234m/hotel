@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="so" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grand Palace Hotel & Resort - Maamulka Hoteelka</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fbf8f2',
+              100: '#f5efdf',
+              200: '#ebdcb9',
+              300: '#dec28b',
+              400: '#d1a75f',
+              500: '#c58d3c',
+              600: '#aa712f',
+              700: '#885528',
+              800: '#6f4426',
+              900: '#5e3a24',
+              DEFAULT: '#c58d3c',
+            },
+            darkbg: {
+              900: '#0b1120',
+              800: '#111827',
+              700: '#1e293b',
+              600: '#334155',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-50 dark:bg-darkbg-900 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-200 antialiased selection:bg-brand-500 selection:text-white min-h-screen">
+
+  <div class="flex h-screen overflow-hidden">
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-white/95 dark:bg-darkbg-800/95 backdrop-blur-xl border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0">
+      <!-- Sidebar Header / Logo -->
+      <div class="p-6 border-b border-slate-200 dark:border-slate-800/80 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-amber-400 flex items-center justify-center text-white shadow-lg shadow-brand-500/25">
+            <i class="fa-solid fa-hotel text-xl"></i>
+          </div>
+          <div>
+            <h1 class="font-display font-bold text-xl tracking-tight text-slate-900 dark:text-white leading-none">GRAND PALACE</h1>
+            <span class="text-xs font-semibold text-brand-600 dark:text-brand-400 tracking-wider uppercase">Luxury & Resort</span>
+          </div>
+        </div>
+        <button id="closeSidebarBtn" class="lg:hidden p-2 text-slate-400 hover:text-slate-600 dark:hover:text-white rounded-lg">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="flex-1 overflow-y-auto px-4 py-6 space-y-1.5 custom-scrollbar">
+        <div class="px-3 pb-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase" data-i18n="nav_main">
+          MAAMULKA GUUD
+        </div>
+
+        <a href="#dashboard" class="nav-item active flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200" data-view="dashboard">
+          <i class="fa-solid fa-chart-pie w-5 text-center text-base"></i>
+          <span data-i18n="nav_dashboard">Dulmar Guud (Dashboard)</span>
+        </a>
+
+        <a href="#rooms" class="nav-item flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200" data-view="rooms">
+          <i class="fa-solid fa-bed w-5 text-center text-base"></i>
+          <span data-i18n="nav_rooms">Qolalka & Qaybaha</span>
+          <span class="ml-auto bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 text-xs px-2 py-0.5 rounded-full font-bold">24</span>
+        </a>
+
+        <a href="#bookings" class="nav-item flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200" data-view="bookings">
+          <i class="fa-solid fa-calendar-check w-5 text-center text-base"></i>
+          <span data-i18n="nav_bookings">Boos-qabsashada</span>
+          <span class="ml-auto bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-xs px-2 py-0.5 rounded-full font-semibold">Cusub</span>
+        </a>
+
+        <a href="#guests" class="nav-item flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200" data-view="guests">
+          <i class="fa-solid fa-users w-5 text-center text-base"></i>
+          <span data-i18n="nav_guests">Macaamiisha (Guests)</span>
+        </a>
+
+        <div class="pt-6 px-3 pb-2 text-[11px] font-bold tracking-wider text-slate-400 uppercase" data-i18n="nav_finance">
+          DHAQAAHAHA & WARBIXINTA
+        </div>
+
+        <a href="#analytics" class="nav-item flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200" data-view="analytics">
+          <i class="fa-solid fa-chart-line w-5 text-center text-base"></i>
+          <span data-i18n="nav_analytics">Warbixinta & Dakhliga</span>
+        </a>
+
+        <a href="#services" class="nav-item flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200" data-view="services">
+          <i class="fa-solid fa-bell-concierge w-5 text-center text-base"></i>
+          <span data-i18n="nav_services">Adeegyada Qolalka</span>
+        </a>
+
+        <a href="#settings" class="nav-item flex items-center gap-3.5 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200" data-view="settings">
+          <i class="fa-solid fa-sliders w-5 text-center text-base"></i>
+          <span data-i18n="nav_settings">Habaynta Hoteelka</span>
+        </a>
+      </div>
+
+      <!-- Hotel Quick Banner / Receptionist Info -->
+      <div class="p-4 m-4 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-brand-500/20 rounded-full blur-2xl"></div>
+        <div class="flex items-center gap-3 mb-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">
+            <i class="fa-solid fa-wifi"></i>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-slate-300">Resort Status</p>
+            <p class="text-xs text-emerald-400 font-bold">Online • 99.8% Active</p>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed mb-3">Xilliga hadda: Xilli Mashquul ah (High Season).</p>
+        <button id="quickBookSidebarBtn" class="w-full py-2 px-3 text-xs font-semibold bg-brand-500 hover:bg-brand-600 text-white rounded-xl transition duration-150 flex items-center justify-center gap-2 shadow">
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span data-i18n="btn_quick_booking">Boos Qabasho Degdeg ah</span>
+        </button>
+      </div>
+
+      <!-- User Profile in Sidebar -->
+      <div class="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center gap-3">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar" class="w-10 h-10 rounded-xl object-cover ring-2 ring-brand-400/50">
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-slate-900 dark:text-white truncate">Faadumo Cali</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 truncate">Maamulaha Guud (General Manager)</p>
+        </div>
+        <button title="Logout" class="p-2 text-slate-400 hover:text-rose-500 rounded-lg transition">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden lg:pl-72">
+      <!-- TOP NAVBAR -->
+      <header class="h-20 bg-white/80 dark:bg-darkbg-800/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between z-40 sticky top-0">
+        <div class="flex items-center gap-4">
+          <button id="openSidebarBtn" class="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-700 rounded-xl transition">
+            <i class="fa-solid fa-bars text-xl"></i>
+          </button>
+          
+          <!-- Search Bar -->
+          <div class="relative hidden sm:block w-72 md:w-96">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="text" id="globalSearchInput" placeholder="Raadi macmiil, qol, ama tixraac..." 
+                   class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-100 dark:bg-darkbg-700 border-none text-sm focus:ring-2 focus:ring-brand-500 text-slate-900 dark:text-white placeholder-slate-400 transition">
+          </div>
+        </div>
+
+        <!-- Right Side Nav Actions -->
+        <div class="flex items-center gap-3">
+          <!-- Language Selector -->
+          <div class="relative">
+            <button id="langToggleBtn" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 dark:bg-darkbg-700 hover:bg-slate-200 dark:hover:bg-darkbg-600 text-xs font-semibold text-slate-700 dark:text-slate-200 transition">
+              <i class="fa-solid fa-globe text-brand-500"></i>
+              <span id="currentLangLabel">Soomaali</span>
+              <i class="fa-solid fa-chevron-down text-[10px]"></i>
+            </button>
+            <div id="langDropdown" class="hidden absolute right-0 mt-2 w-36 bg-white dark:bg-darkbg-700 rounded-xl shadow-xl border border-slate-100 dark:border-slate-600 py-1 z-50 text-xs">
+              <button class="w-full text-left px-4 py-2.5 hover:bg-brand-50 dark:hover:bg-darkbg-600 flex items-center gap-2 font-medium" data-lang="so">
+                🇸🇴 Soomaali
+              </button>
+              <button class="w-full text-left px-4 py-2.5 hover:bg-brand-50 dark:hover:bg-darkbg-600 flex items-center gap-2 font-medium" data-lang="en">
+                🇬🇧 English
+              </button>
+            </div>
+          </div>
+
+          <!-- Dark Mode Toggle -->
+          <button id="themeToggleBtn" class="p-2.5 rounded-xl bg-slate-100 dark:bg-darkbg-700 hover:bg-slate-200 dark:hover:bg-darkbg-600 text-slate-600 dark:text-amber-400 transition shadow-sm" title="Toggle Theme">
+            <i class="fa-solid fa-moon dark:hidden text-slate-600"></i>
+            <i class="fa-solid fa-sun hidden dark:inline text-amber-400"></i>
+          </button>
+
+          <!-- Notification Dropdown -->
+          <div class="relative">
+            <button id="notificationBtn" class="relative p-2.5 rounded-xl bg-slate-100 dark:bg-darkbg-700 hover:bg-slate-200 dark:hover:bg-darkbg-600 text-slate-600 dark:text-slate-300 transition">
+              <i class="fa-regular fa-bell"></i>
+              <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white dark:ring-darkbg-800"></span>
+            </button>
+            <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-darkbg-700 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-600 p-4 z-50">
+              <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-600">
+                <h4 class="font-bold text-sm" data-i18n="notifications_title">Ogeysiisyada</h4>
+                <span class="text-xs bg-rose-100 text-rose-600 dark:bg-rose-900/50 dark:text-rose-300 px-2 py-0.5 rounded-full font-semibold">3 Cusub</span>
+              </div>
+              <div class="py-2 space-y-2.5 max-h-64 overflow-y-auto">
+                <div class="flex gap-3 text-xs p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-darkbg-600">
+                  <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-slate-800 dark:text-white">Qolka 304 waa la xaqiijiyay</p>
+                    <p class="text-slate-400 text-[11px]">Axmed Nuur • 10 daqiiqo kahor</p>
+                  </div>
+                </div>
+                <div class="flex gap-3 text-xs p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-darkbg-600">
+                  <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-broom"></i>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-slate-800 dark:text-white">Qolka 102 wuxuu u baahan yahay nadiifin</p>
+                    <p class="text-slate-400 text-[11px]">Adeegga Nadiifinta • 25 daqiiqo kahor</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Reservation CTA Button -->
+          <button id="headerAddBookingBtn" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-amber-500 hover:from-brand-700 hover:to-amber-600 text-white font-semibold text-sm shadow-md shadow-brand-500/30 transition transform active:scale-95">
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span class="hidden sm:inline" data-i18n="btn_new_reservation">Boos Cusub</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- MAIN SCROLLABLE DASHBOARD VIEW -->
+      <main class="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 custom-scrollbar">
+        
+        <!-- WELCOME BANNER WITH LUXURY PHOTO OVERLAY -->
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-slate-900 border border-slate-800">
+          <!-- Background Cover Photo -->
+          <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80" 
+               alt="Luxury Hotel" 
+               class="absolute inset-0 w-full h-full object-cover opacity-35 transform hover:scale-105 transition-transform duration-700 ease-out">
+          <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent"></div>
+          
+          <div class="relative p-6 md:p-10 z-10 max-w-2xl text-white">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/20 border border-brand-400/30 text-brand-300 text-xs font-semibold uppercase tracking-wider mb-3">
+              <i class="fa-solid fa-crown text-brand-400"></i>
+              <span data-i18n="hero_badge">Nidaamka Casriga ah ee Maamulka</span>
+            </div>
+            <h2 class="font-display text-2xl md:text-4xl font-extrabold tracking-tight text-white mb-2" data-i18n="hero_title">
+              Kusoo Dhawoow Grand Palace Resort
+            </h2>
+            <p class="text-slate-300 text-sm md:text-base mb-6 leading-relaxed" data-i18n="hero_desc">
+              Ku maamul qolalka, boos-qabsashada macaamiisha, dakhliga iyo adeegyada hoteelka hal meel oo casri ah oo leh xog degdeg ah.
+            </p>
+            
+            <div class="flex flex-wrap items-center gap-3">
+              <button onclick="scrollToRooms()" class="px-5 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm transition shadow-lg shadow-brand-500/40 flex items-center gap-2">
+                <i class="fa-solid fa-bed"></i>
+                <span data-i18n="btn_explore_rooms">Eeg Dhammaan Qolalka</span>
+              </button>
+              <button onclick="openBookingModal()" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-semibold text-sm transition flex items-center gap-2">
+                <i class="fa-solid fa-calendar-plus"></i>
+                <span data-i18n="btn_add_booking_now">Diiwaangeli Macmiil</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 KEY KPI STATS METRICS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Card 1: Total Rooms Occupancy -->
+          <div class="kpi-card bg-white dark:bg-darkbg-800 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-door-open"></i>
+              </div>
+              <span class="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-1 rounded-lg">
+                <i class="fa-solid fa-arrow-trend-up"></i> +12%
+              </span>
+            </div>
+            <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" data-i18n="kpi_occupancy">Heerka Qolalka Buuxa</p>
+            <div class="flex items-baseline gap-2 mt-1">
+              <h3 class="font-display text-2xl font-bold text-slate-900 dark:text-white" id="occupancyRate">82.5%</h3>
+              <span class="text-xs text-slate-400 font-medium">20/24 Qolal</span>
+            </div>
+            <div class="w-full bg-slate-100 dark:bg-darkbg-700 h-2 rounded-full mt-3 overflow-hidden">
+              <div class="bg-gradient-to-r from-amber-500 to-brand-500 h-full rounded-full" style="width: 82.5%"></div>
+            </div>
+          </div>
+
+          <!-- Card 2: Today's Revenue -->
+          <div class="kpi-card bg-white dark:bg-darkbg-800 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-hand-holding-dollar"></i>
+              </div>
+              <span class="flex items-center gap-1 text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-1 rounded-lg">
+                <i class="fa-solid fa-arrow-trend-up"></i> +8.4%
+              </span>
+            </div>
+            <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" data-i18n="kpi_revenue">Dakhliga Maanta</p>
+            <div class="flex items-baseline gap-2 mt-1">
+              <h3 class="font-display text-2xl font-bold text-slate-900 dark:text-white" id="todayRevenue">$4,820</h3>
+              <span class="text-xs text-slate-400 font-medium">USD</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-3 flex items-center gap-1">
+              <i class="fa-solid fa-calendar-day text-slate-400"></i>
+              <span data-i18n="kpi_revenue_sub">Shalay: $4,450 USD</span>
+            </p>
+          </div>
+
+          <!-- Card 3: Check-in / Check-out Today -->
+          <div class="kpi-card bg-white dark:bg-darkbg-800 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-suitcase-rolling"></i>
+              </div>
+              <span class="text-xs font-bold text-blue-600 bg-blue-50 dark:bg-blue-950/50 px-2 py-1 rounded-lg">
+                Maanta
+              </span>
+            </div>
+            <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" data-i18n="kpi_checkins">Soo Gelid & Ka Tagid</p>
+            <div class="flex items-baseline gap-3 mt-1">
+              <div class="flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-down-long text-emerald-500 text-sm"></i>
+                <h3 class="font-display text-2xl font-bold text-slate-900 dark:text-white" id="checkinCount">14</h3>
+                <span class="text-xs text-slate-400 font-medium" data-i18n="in_label">Soo galay</span>
+              </div>
+              <span class="text-slate-300 dark:text-slate-600">/</span>
+              <div class="flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-up-long text-rose-500 text-sm"></i>
+                <h3 class="font-display text-2xl font-bold text-slate-900 dark:text-white" id="checkoutCount">8</h3>
+                <span class="text-xs text-slate-400 font-medium" data-i18n="out_label">Baxay</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 mt-3" data-i18n="kpi_checkins_sub">6 macmiil ayaa weli la sugayaa</p>
+          </div>
+
+          <!-- Card 4: Total Guests Active -->
+          <div class="kpi-card bg-white dark:bg-darkbg-800 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md transition">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xl">
+                <i class="fa-solid fa-user-group"></i>
+              </div>
+              <span class="flex items-center gap-1 text-xs font-bold text-purple-600 bg-purple-50 dark:bg-purple-950/50 px-2 py-1 rounded-lg">
+                <i class="fa-solid fa-heart text-rose-500"></i> 4.9 / 5
+              </span>
+            </div>
+            <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider" data-i18n="kpi_guests">Macaamiisha Joogta Hadda</p>
+            <div class="flex items-baseline gap-2 mt-1">
+              <h3 class="font-display text-2xl font-bold text-slate-900 dark:text-white" id="activeGuestsCount">48</h3>
+              <span class="text-xs text-slate-400 font-medium" data-i18n="guest_label">Qof</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-3" data-i18n="kpi_guests_sub">Qanacsanaanta macaamiisha: 98%</p>
+          </div>
+        </div>
+
+        <!-- CHARTS SECTION: REVENUE & OCCUPANCY -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Main Chart: Weekly Revenue & Bookings -->
+          <div class="lg:col-span-2 bg-white dark:bg-darkbg-800 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <h3 class="font-display text-lg font-bold text-slate-900 dark:text-white" data-i18n="chart_revenue_title">
+                  Dhaqdhaqaaqa Dakhliga & Boosaska Toddobaadka
+                </h3>
+                <p class="text-xs text-slate-400" data-i18n="chart_revenue_subtitle">Muddada: Isniin - Axad (Todobaadkan)</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1 text-xs font-semibold text-brand-600 dark:text-brand-400">
+                  <span class="w-2.5 h-2.5 rounded-full bg-brand-500"></span> Dakhli ($)
+                </span>
+                <span class="inline-flex items-center gap-1 text-xs font-semibold text-blue-500 ml-3">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Boosas
+                </span>
+              </div>
+            </div>
+            <div class="h-72 w-full">
+              <canvas id="revenueWeeklyChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Secondary Chart: Room Category Occupancy (Doughnut) -->
+          <div class="bg-white dark:bg-darkbg-800 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display text-lg font-bold text-slate-900 dark:text-white" data-i18n="chart_room_types_title">
+                  Qaybaha Qolalka
+                </h3>
+                <span class="text-xs text-slate-400 font-semibold" data-i18n="chart_status_live">Xaaladda Hadda</span>
+              </div>
+              <p class="text-xs text-slate-400 mb-4" data-i18n="chart_room_types_sub">Qeybinta qolalka la degan yahay iyo noocyadooda</p>
+              <div class="h-56 relative flex items-center justify-center">
+                <canvas id="roomCategoryChart"></canvas>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-4 border-t border-slate-100 dark:border-slate-800/80 text-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                <span class="text-slate-600 dark:text-slate-300">Presidential Suite</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                <span class="text-slate-600 dark:text-slate-300">Ocean View</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <span class="text-slate-600 dark:text-slate-300">Executive King</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                <span class="text-slate-600 dark:text-slate-300">Deluxe Double</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROOMS & SUITES MANAGEMENT SECTION WITH HIGH QUALITY IMAGES -->
+        <section id="roomsSection" class="space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2.5">
+                <h3 class="font-display text-2xl font-bold text-slate-900 dark:text-white" data-i18n="rooms_heading">
+                  Qolalka Hoteelka & Xaaladdooda
+                </h3>
+                <span id="roomsCountBadge" class="bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 text-xs px-2.5 py-0.5 rounded-full font-bold">
+                  8 Qolal ah
+                </span>
+              </div>
+              <p class="text-xs md:text-sm text-slate-500 dark:text-slate-400" data-i18n="rooms_subheading">
+                Kala shaandhee qolalka bannaan, kuwa la degan yahay iyo kuwa nadiifinta ku jira.
+              </p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex flex-wrap items-center gap-1.5 bg-slate-200/70 dark:bg-darkbg-700 p-1.5 rounded-2xl text-xs font-semibold">
+              <button class="room-filter-btn active px-3.5 py-2 rounded-xl transition duration-150" data-filter="all" data-i18n="filter_all">Dhammaan (All)</button>
+              <button class="room-filter-btn px-3.5 py-2 rounded-xl transition duration-150" data-filter="available" data-i18n="filter_available">Bannaan (Available)</button>
+              <button class="room-filter-btn px-3.5 py-2 rounded-xl transition duration-150" data-filter="occupied" data-i18n="filter_occupied">La Degan (Occupied)</button>
+              <button class="room-filter-btn px-3.5 py-2 rounded-xl transition duration-150" data-filter="cleaning" data-i18n="filter_cleaning">Nadiifin (Cleaning)</button>
+            </div>
+          </div>
+
+          <!-- Room Cards Grid -->
+          <div id="roomsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <!-- Dynamic Content loaded via app.js -->
+          </div>
+        </section>
+
+        <!-- BOOKINGS & RESERVATION TABLE SECTION -->
+        <section id="bookingsSection" class="bg-white dark:bg-darkbg-800 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-sm p-6 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 class="font-display text-xl font-bold text-slate-900 dark:text-white" data-i18n="table_title">
+                Boos-Qabsashadii Ugu Dambeysay
+              </h3>
+              <p class="text-xs text-slate-400" data-i18n="table_subtitle">Liiska macaamiisha qabsaday qolalka iyo xaaladda bixinta lacagta</p>
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <div class="relative">
+                <i class="fa-solid fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                <select id="bookingStatusFilter" class="pl-8 pr-8 py-2 rounded-xl bg-slate-100 dark:bg-darkbg-700 text-xs font-semibold text-slate-700 dark:text-slate-200 border-none focus:ring-2 focus:ring-brand-500">
+                  <option value="all" data-i18n="opt_all_status">Dhammaan Xaaladaha</option>
+                  <option value="Checked In" data-i18n="opt_checked_in">Soo Galay (Checked In)</option>
+                  <option value="Confirmed" data-i18n="opt_confirmed">La Xaqiijiyay (Confirmed)</option>
+                  <option value="Checked Out" data-i18n="opt_checked_out">Baxay (Checked Out)</option>
+                </select>
+              </div>
+
+              <button onclick="openBookingModal()" class="px-3.5 py-2 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold transition flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-user-plus text-xs"></i>
+                <span data-i18n="btn_add_guest">Ku Dar Macmiil</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table Container -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-200 dark:border-slate-700/80 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  <th class="py-3.5 px-4" data-i18n="th_guest">Macmiilka</th>
+                  <th class="py-3.5 px-4" data-i18n="th_room">Qolka & Nooca</th>
+                  <th class="py-3.5 px-4" data-i18n="th_dates">Taariikhda (In / Out)</th>
+                  <th class="py-3.5 px-4" data-i18n="th_payment">Bixinta Lacagta</th>
+                  <th class="py-3.5 px-4" data-i18n="th_status">Xaaladda</th>
+                  <th class="py-3.5 px-4 text-right" data-i18n="th_actions">Falka (Actions)</th>
+                </tr>
+              </thead>
+              <tbody id="bookingsTableBody" class="divide-y divide-slate-100 dark:divide-slate-800/80 text-sm">
+                <!-- Dynamically populated via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- HOTEL AMENITIES & QUICK SERVICES HIGHLIGHT -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-gradient-to-br from-amber-500 to-brand-600 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
+            <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl"></div>
+            <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-xl mb-4">
+              <i class="fa-solid fa-utensils"></i>
+            </div>
+            <h4 class="font-display font-bold text-lg mb-1" data-i18n="card_restaurant_title">Cunto & Makhaayad Casri ah</h4>
+            <p class="text-xs text-white/80 leading-relaxed mb-4" data-i18n="card_restaurant_desc">Adeegga qolka 24/7 iyo cunnooyin caalami ah iyo kuwo maxalli ah oo tayo sare leh.</p>
+            <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
+              <i class="fa-solid fa-clock"></i> 24 Saac Furan
+            </span>
+          </div>
+
+          <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
+            <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl"></div>
+            <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-xl mb-4">
+              <i class="fa-solid fa-water-ladder"></i>
+            </div>
+            <h4 class="font-display font-bold text-lg mb-1" data-i18n="card_pool_title">Barkadda & Spa Raaxo</h4>
+            <p class="text-xs text-white/80 leading-relaxed mb-4" data-i18n="card_pool_desc">Barkad kulul iyo mid qabow oo u furan dhammaan martida suite-ka iyo VIP-da.</p>
+            <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
+              <i class="fa-solid fa-spa"></i> VIP Resort Spa
+            </span>
+          </div>
+
+          <div class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden">
+            <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-white/10 rounded-full blur-xl"></div>
+            <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-xl mb-4">
+              <i class="fa-solid fa-car-side"></i>
+            </div>
+            <h4 class="font-display font-bold text-lg mb-1" data-i18n="card_transport_title">Gawaarida Garoonka (VIP Shuttle)</h4>
+            <p class="text-xs text-white/80 leading-relaxed mb-4" data-i18n="card_transport_desc">Gaadiid toos ah oo kaaga qaadaya garoonka diyaaradaha kuna keenaya hoteelka.</p>
+            <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-white/20 px-3 py-1 rounded-full">
+              <i class="fa-solid fa-plane-arrival"></i> Airport Transfer
+            </span>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- BOOKING MODAL (DIIWAANGELIN CUSUB) -->
+  <div id="bookingModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white dark:bg-darkbg-800 rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 dark:border-slate-700 transform scale-95 transition-transform duration-300">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-500 flex items-center justify-center">
+            <i class="fa-solid fa-calendar-plus text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white" data-i18n="modal_title">Boos-qabasho Cusub</h3>
+            <p class="text-xs text-slate-400" data-i18n="modal_sub">Geli xogta macmiilka iyo qolka uu doonayo</p>
+          </div>
+        </div>
+        <button onclick="closeBookingModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 rounded-lg">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <form id="newBookingForm" class="mt-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5" data-i18n="modal_name_label">Magaca Macmiilka</label>
+          <input type="text" id="guestNameInput" required placeholder="Tusaale: Axmed Cabdullaahi" 
+                 class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200 dark:border-slate-600 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5" data-i18n="modal_room_label">Dooro Qolka</label>
+            <select id="roomSelectInput" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200 dark:border-slate-600 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+              <!-- Dynamically populated available rooms -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5" data-i18n="modal_phone_label">Telefoonka Macmiilka</label>
+            <input type="tel" id="guestPhoneInput" placeholder="+252 61..." 
+                   class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200 dark:border-slate-600 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5" data-i18n="modal_checkin_label">Taariikhda Soo Gelidda</label>
+            <input type="date" id="checkInDateInput" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200 dark:border-slate-600 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5" data-i18n="modal_checkout_label">Taariikhda Ka Bixidda</label>
+            <input type="date" id="checkOutDateInput" required class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200 dark:border-slate-600 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5" data-i18n="modal_payment_label">Xaaladda Lacagta</label>
+            <select id="paymentStatusInput" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200 dark:border-slate-600 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+              <option value="Paid" data-i18n="opt_paid">Waa La Bixiyay (Paid)</option>
+              <option value="Pending" data-i18n="opt_pending">Waa Dhiman tahay (Pending)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5" data-i18n="modal_booking_status_label">Xaaladda Booska</label>
+            <select id="bookingStatusSelect" class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-darkbg-700 border border-slate-200 dark:border-slate-600 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+              <option value="Checked In" data-i18n="opt_checked_in">Soo Galay (Checked In)</option>
+              <option value="Confirmed" data-i18n="opt_confirmed">La Xaqiijiyay (Confirmed)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100 dark:border-slate-700">
+          <button type="button" onclick="closeBookingModal()" class="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-700 transition" data-i18n="btn_cancel">
+            Ka Noqo
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-amber-500 hover:from-brand-700 hover:to-amber-600 text-white text-sm font-bold shadow-lg shadow-brand-500/30 transition transform active:scale-95 flex items-center gap-2">
+            <i class="fa-solid fa-check"></i>
+            <span data-i18n="btn_save_booking">Keydi Booska</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ROOM DETAILS PREVIEW MODAL -->
+  <div id="roomDetailModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white dark:bg-darkbg-800 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 transform scale-95 transition-transform duration-300">
+      <div class="relative h-64 sm:h-72">
+        <img id="detailRoomImg" src="" alt="Room detail" class="w-full h-full object-cover">
+        <button onclick="closeRoomDetailModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-900/60 hover:bg-slate-900 text-white flex items-center justify-center backdrop-blur-sm transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="absolute bottom-4 left-4">
+          <span id="detailRoomBadge" class="px-3 py-1 rounded-full text-xs font-bold text-white shadow-md"></span>
+        </div>
+      </div>
+      <div class="p-6 sm:p-8 space-y-4">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 id="detailRoomTitle" class="font-display font-bold text-2xl text-slate-900 dark:text-white"></h3>
+            <p id="detailRoomNumber" class="text-sm text-brand-600 dark:text-brand-400 font-semibold"></p>
+          </div>
+          <div class="text-right">
+            <span id="detailRoomPrice" class="font-display text-2xl font-black text-slate-900 dark:text-white"></span>
+            <span class="text-xs text-slate-400 block" data-i18n="per_night">habeenkiiba</span>
+          </div>
+        </div>
+
+        <p id="detailRoomDescription" class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed"></p>
+
+        <div>
+          <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" data-i18n="room_amenities_label">Adeegyada Qolka</h4>
+          <div id="detailRoomAmenities" class="flex flex-wrap gap-2">
+            <!-- Amenities pills -->
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100 dark:border-slate-700/80 flex items-center justify-between">
+          <button id="toggleRoomStatusBtn" class="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 text-xs font-bold hover:bg-slate-100 dark:hover:bg-darkbg-700 transition">
+            Beddel Xaaladda Qolka
+          </button>
+          <button id="detailBookBtn" class="px-5 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold transition shadow-md shadow-brand-500/30">
+            Hadda Qabso Qolkan
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script src="app.js"></script>
+</body>
+</html>
